@@ -2,6 +2,11 @@
   "name": "binah-syntax",
   "displayName": "Binah Syntax",
   "description": "Syntax highlighting for Binah files",
+  "publisher": "nlehmann",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nilehmann/binah-syntax"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.45.0"
