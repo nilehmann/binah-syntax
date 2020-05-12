@@ -1,0 +1,25 @@
+{
+    "name": "binah-syntax",
+    "displayName": "Binah Syntax",
+    "description": "Syntax highlighting for Binah spec files",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.45.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "binah-spec",
+            "aliases": ["Binah Spec", "binah-spec"],
+            "extensions": [".binah"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "binah-spec",
+            "scopeName": "meta.declaration.record.binah",
+            "path": "./syntaxes/binah-spec.tmLanguage.json"
+        }]
+    }
+}
