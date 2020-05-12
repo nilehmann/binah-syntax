@@ -1,0 +1,101 @@
+---
+"$schema": https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+name: Binah
+patterns:
+  - include: "#strings"
+  - include: "#record_decl"
+  - include: "#predicate_decl"
+  - include: "#policy_decl"
+  - include: "#line_comment"
+  - include: "#inline"
+repository:
+  inline:
+    name: comment.block
+    begin: "^(#inline)"
+    captures:
+      1: { "name": keyword.control.inline.binah }
+  line_comment:
+    name: comment.line.double-dash.binah
+    begin: "--"
+    end: $
+  strings:
+    name: string.quoted.double.binah
+    begin: '"'
+    end: '"'
+    patterns:
+      - name: constant.character.escape.binah
+        match: "\\\\."
+  predicate_decl:
+    name: meta.declaration.predicate.binah
+    begin: (predicate)\s+([\p{Ll}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)
+    beginCaptures:
+      1: { "name": keyword.other.predicate.other }
+      2: { "name": entity.name.function }
+    end: >-
+      (?x) # Detect end of predicate declaration
+           # Decreasing indentation
+         ^(?!          # Implicit indentation: end match on newline *unless* the new line is either:
+             \s+\S    # - more indented, or
+           | \s*        # - starts with whitespace, followed by:
+             (?: $      #   - the end of the line (i.e. empty line), or
+             |--+       #   - the start of a single-line comment.
+                (?![\p{S}\p{P}&&[^(),;\[\]{}`_"']]).*$) # non-symbol
+                        # The double dash may not be followed by other operator characters
+                        # (then it would be an operator, not a comment)
+          )
+    patterns:
+      - match: \b([\p{Lu}\p{Lt}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)\b
+        captures:
+          1: { "name": storage.type.binah }
+  record_decl:
+    name: meta.declaration.record.binah
+    begin: ^([\p{Lu}\p{Lt}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)
+    beginCaptures:
+      1: { "name": storage.type.binah }
+    end: >-
+      (?x) # Detect end of record declaration
+           # Decreasing indentation
+         ^(?!          # Implicit indentation: end match on newline *unless* the new line is either:
+             \s+\S    # - more indented, or
+           | \s*        # - starts with whitespace, followed by:
+             (?: $      #   - the end of the line (i.e. empty line), or
+             |--+       #   - the start of a single-line comment.
+                (?![\p{S}\p{P}&&[^(),;\[\]{}`_"']]).*$) # non-symbol
+                        # The double dash may not be followed by other operator characters
+                        # (then it would be an operator, not a comment)
+          )
+    patterns:
+      - name: meta.declaration.field.binah
+        match: >-
+          (?x)
+            ^\s+([\p{Ll}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)       # Field name
+            \s+([\p{Lu}\p{Lt}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)  # Type
+            (?:\s+(@[\p{Lu}\p{Lt}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*))?   # Policy Ref
+        captures:
+          1: { "name": variable.other }
+          2: { "name": storage.type.binah }
+          3: { "name": entity.name.function }
+      - match: ^\s+(assert|insert)
+        captures:
+          1: { "name": keyword.other.$1.binah }
+      - include: "#line_comment"
+  policy_decl:
+    name: meta.declaration.policy.binah
+    begin: (policy)\s+([\p{Lu}\p{Lt}][\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']*)
+    beginCaptures:
+      1: { "name": keyword.other.predicate.other }
+      2: { "name": entity.name.function }
+    end: >-
+      (?x) # Detect end of predicate declaration
+           # Decreasing indentation
+         ^(?!          # Implicit indentation: end match on newline *unless* the new line is either:
+             \s+\S    # - more indented, or
+           | \s*        # - starts with whitespace, followed by:
+             (?: $      #   - the end of the line (i.e. empty line), or
+             |--+       #   - the start of a single-line comment.
+                (?![\p{S}\p{P}&&[^(),;\[\]{}`_"']]).*$) # non-symbol
+                        # The double dash may not be followed by other operator characters
+                        # (then it would be an operator, not a comment)
+          )
+
+scopeName: code.binah
