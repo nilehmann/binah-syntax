@@ -47,6 +47,14 @@
         }
       ]
     },
+    "policy_ref": {
+      "name": "entity.name.function",
+      "match": "@[\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*"
+    },
+    "field_name": {
+      "name": "variable.other.field.binah",
+      "match": "[\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*"
+    },
     "predicate_decl": {
       "name": "meta.declaration.predicate.binah",
       "begin": "(predicate)\\s+([\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)",
@@ -82,7 +90,7 @@
       "patterns": [
         {
           "name": "meta.declaration.field.binah",
-          "match": "(?x)\n  ^\\s+([\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)       # Field name\n  \\s+([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)  # Type\n  (?:\\s+(@[\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*))?   # Policy Ref",
+          "match": "(?x)\n  ^\\s+([\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)              # Field name\n  \\s+([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)         # Type",
           "captures": {
             "1": {
               "name": "variable.other"
@@ -96,15 +104,49 @@
           }
         },
         {
-          "match": "^\\s+(assert|insert)",
+          "match": "^\\s+(assert)",
           "captures": {
             "1": {
-              "name": "keyword.other.$1.binah"
+              "name": "keyword.other.assert.binah"
             }
           }
         },
         {
+          "name": "meta.declaration.$2.binah",
+          "begin": "^(\\s+)(?=(read|update|insert))",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.other.$2.binah"
+            }
+          },
+          "end": "(?x) \n   ^(?!           # End match on newline *unless* the new line is either:\n       \\1\\s+\\S    # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )",
+          "patterns": [
+            {
+              "include": "#policy_ref"
+            },
+            {
+              "include": "#line_comment"
+            },
+            {
+              "name": "meta.declaration.field-list.binah",
+              "begin": "(?x)\n  ^\\s+\\[ | (?:read|update|insert)\\s+\\[",
+              "end": "\\]",
+              "patterns": [
+                {
+                  "include": "#line_comment"
+                },
+                {
+                  "include": "#field_name"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "include": "#line_comment"
+        },
+        {
+          "include": "#policy_ref"
         }
       ]
     },
@@ -119,7 +161,7 @@
           "name": "entity.name.function"
         }
       },
-      "end": "(?x) # Detect end of predicate declaration\n     # Decreasing indentation\n   ^(?!          # Implicit indentation: end match on newline *unless* the new line is either:\n       \\s+\\S    # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )"
+      "end": "(?x) \n   ^(?!           # End match on newline *unless* the new line is either:\n       \\s+\\S      # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )"
     }
   },
   "scopeName": "code.binah"
