@@ -5,6 +5,7 @@
 To get the extension running you need to build the `vsix` file and install it manually
 
 ```bash
+$ npm install
 $ npm install -g vsce
 $ vsce package
 $ code --install-extension storm-vscode-<version>.vsix
