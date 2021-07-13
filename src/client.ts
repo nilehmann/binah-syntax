@@ -17,10 +17,10 @@ import {
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-  const settings = workspace.getConfiguration("binah");
-  let path: string = settings.get("executablePath") || "binah-lsp";
+  const settings = workspace.getConfiguration("storm");
+  let path: string = settings.get("executablePath") || "storm-lsp";
   if (!path.trim()) {
-    path = "binah-lsp";
+    path = "storm-lsp";
   }
   const exec: Executable = {
     command: path,
@@ -32,15 +32,15 @@ export function activate(context: ExtensionContext) {
   };
 
   let clientOptions: LanguageClientOptions = {
-    documentSelector: [{ scheme: "file", language: "binah" }],
+    documentSelector: [{ scheme: "file", language: "storm" }],
     synchronize: {
-      fileEvents: workspace.createFileSystemWatcher("**/.binah"),
+      fileEvents: workspace.createFileSystemWatcher("**/.storm"),
     },
   };
 
   client = new LanguageClient(
-    "binah-lsp",
-    "Binah Language Server",
+    "storm-lsp",
+    "Storm Language Server",
     serverOptions,
     clientOptions
   );

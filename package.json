@@ -1,13 +1,13 @@
 {
-  "name": "binah-vscode",
-  "displayName": "Binah Language",
-  "description": "Syntax highlighting for Binah files",
+  "name": "storm-vscode",
+  "displayName": "Storm Model Files",
+  "description": "Language support for Storm model files",
   "publisher": "nlehmann",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nilehmann/vscode-binah"
+    "url": "https://github.com/storm-framework/vscode"
   },
-  "version": "1.0.0",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -16,37 +16,37 @@
   ],
   "main": "out/client.js",
   "activationEvents": [
-    "onLanguage:binah"
+    "onLanguage:storm"
   ],
   "contributes": {
     "languages": [
       {
-        "id": "binah",
+        "id": "storm",
         "aliases": [
-          "Binah",
-          "binah"
+          "Storm",
+          "storm"
         ],
         "extensions": [
-          ".binah"
+          ".storm"
         ],
         "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
-        "language": "binah",
-        "scopeName": "code.binah",
-        "path": "./syntaxes/binah-spec.tmLanguage.json"
+        "language": "storm",
+        "scopeName": "code.storm",
+        "path": "./syntaxes/storm-spec.tmLanguage.json"
       }
     ],
     "configuration": {
-      "title": "Binah",
+      "title": "Storm",
       "properties": {
-        "binah.executablePath": {
-          "title": "Binah-lsp path",
+        "storm.executablePath": {
+          "title": "storm-lsp path",
           "type": "string",
           "default": "",
-          "description": "Path to binah lsp executable."
+          "description": "Path to storm lsp executable."
         }
       }
     }

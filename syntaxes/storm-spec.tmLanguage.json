@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Binah",
+  "name": "Storm",
   "patterns": [
     {
       "include": "#strings"
@@ -19,30 +19,55 @@
     },
     {
       "include": "#inline"
+    },
+    {
+      "include": "#import"
     }
   ],
   "repository": {
+    "import": {
+      "name": "meta.import.storm",
+      "begin": "(import)\\s+([^.]+)(:?\\.([^.\\s]+))*\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.import.storm"
+        },
+        "2": {
+          "name": "entity.name.namespace.storm"
+        },
+        "3": {
+          "name": "entity.name.namespace.storm"
+        }
+      },
+      "patterns": [
+        {
+          "match": "[\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*",
+          "name": "storage.type.storm"
+        }
+      ],
+      "end": "$"
+    },
     "inline": {
       "name": "comment.block",
       "begin": "^(#inline)",
       "captures": {
         "1": {
-          "name": "keyword.control.inline.binah"
+          "name": "keyword.control.inline.storm"
         }
       }
     },
     "line_comment": {
-      "name": "comment.line.double-dash.binah",
+      "name": "comment.line.double-dash.storm",
       "begin": "--",
       "end": "$"
     },
     "strings": {
-      "name": "string.quoted.double.binah",
+      "name": "string.quoted.double.storm",
       "begin": "\"",
       "end": "\"",
       "patterns": [
         {
-          "name": "constant.character.escape.binah",
+          "name": "constant.character.escape.storm",
           "match": "\\\\."
         }
       ]
@@ -52,11 +77,11 @@
       "match": "@[\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*"
     },
     "field_name": {
-      "name": "variable.other.field.binah",
+      "name": "variable.other.field.storm",
       "match": "[\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*"
     },
     "predicate_decl": {
-      "name": "meta.declaration.predicate.binah",
+      "name": "meta.declaration.predicate.storm",
       "begin": "(predicate)\\s+([\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)",
       "beginCaptures": {
         "1": {
@@ -72,31 +97,31 @@
           "match": "\\b([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)\\b",
           "captures": {
             "1": {
-              "name": "storage.type.binah"
+              "name": "storage.type.storm"
             }
           }
         }
       ]
     },
     "record_decl": {
-      "name": "meta.declaration.record.binah",
+      "name": "meta.declaration.record.storm",
       "begin": "^([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)",
       "beginCaptures": {
         "1": {
-          "name": "storage.type.binah"
+          "name": "storage.type.storm"
         }
       },
       "end": "(?x) # Detect end of record declaration\n     # Decreasing indentation\n   ^(?!          # Implicit indentation: end match on newline *unless* the new line is either:\n       \\s+\\S    # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )",
       "patterns": [
         {
-          "name": "meta.declaration.field.binah",
+          "name": "meta.declaration.field.storm",
           "match": "(?x)\n  ^\\s+([\\p{Ll}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)              # Field name\n  \\s+([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)         # Type",
           "captures": {
             "1": {
               "name": "variable.other"
             },
             "2": {
-              "name": "storage.type.binah"
+              "name": "storage.type.storm"
             },
             "3": {
               "name": "entity.name.function"
@@ -107,19 +132,19 @@
           "match": "^\\s+(assert)",
           "captures": {
             "1": {
-              "name": "keyword.other.assert.binah"
+              "name": "keyword.other.assert.storm"
             }
           }
         },
         {
-          "name": "meta.declaration.$2.binah",
+          "name": "meta.declaration.$2.storm",
           "begin": "^(\\s+)(?=(read|update|insert))",
           "beginCaptures": {
             "2": {
-              "name": "keyword.other.$2.binah"
+              "name": "keyword.other.$2.storm"
             }
           },
-          "end": "(?x) \n   ^(?!           # End match on newline *unless* the new line is either:\n       \\1\\s+\\S    # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )",
+          "end": "(?x)\n   ^(?!           # End match on newline *unless* the new line is either:\n       \\1\\s+\\S    # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )",
           "patterns": [
             {
               "include": "#policy_ref"
@@ -128,7 +153,7 @@
               "include": "#line_comment"
             },
             {
-              "name": "meta.declaration.field-list.binah",
+              "name": "meta.declaration.field-list.storm",
               "begin": "(?x)\n  ^\\s+\\[ | (?:read|update|insert)\\s+\\[",
               "end": "\\]",
               "patterns": [
@@ -151,7 +176,7 @@
       ]
     },
     "policy_decl": {
-      "name": "meta.declaration.policy.binah",
+      "name": "meta.declaration.policy.storm",
       "begin": "(policy)\\s+([\\p{Lu}\\p{Lt}][\\p{Ll}_\\p{Lu}\\p{Lt}\\p{Nd}']*)",
       "beginCaptures": {
         "1": {
@@ -161,8 +186,8 @@
           "name": "entity.name.function"
         }
       },
-      "end": "(?x) \n   ^(?!           # End match on newline *unless* the new line is either:\n       \\s+\\S      # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )"
+      "end": "(?x)\n   ^(?!           # End match on newline *unless* the new line is either:\n       \\s+\\S      # - more indented, or\n     | \\s*        # - starts with whitespace, followed by:\n       (?: $      #   - the end of the line (i.e. empty line), or\n       |--+       #   - the start of a single-line comment.\n          (?![\\p{S}\\p{P}&&[^(),;\\[\\]{}`_\"']]).*$) # non-symbol\n                  # The double dash may not be followed by other operator characters\n                  # (then it would be an operator, not a comment)\n    )"
     }
   },
-  "scopeName": "code.binah"
+  "scopeName": "code.storm"
 }

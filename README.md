@@ -1,4 +1,4 @@
-# Language support for `.binah` files
+# Language support for `.storm` files
 
 ## Install
 
@@ -7,9 +7,9 @@ To get the extension running you need to build the `vsix` file and install it ma
 ```bash
 $ npm install -g vsce
 $ vsce package
-$ code --install-extension binah-syntax-<version>.vsix
+$ code --install-extension storm-vscode-<version>.vsix
 ```
 
 ## Configuration
 
-If [binah-lsp](https://github.com/binah-framework/binah-codegen) is in your path the extension should work without problems. Alternativelly, you can set `binah.executablePath` in your `settings.json` to set the path explicitly.
+If [storm-lsp](https://github.com/storm-framework/storm-codegen) is in your path the extension should work without problems. Alternativelly, you can set `storm.executablePath` in your `settings.json` to set the path explicitly.
